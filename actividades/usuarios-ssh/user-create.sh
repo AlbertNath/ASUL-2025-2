@@ -4,6 +4,7 @@
 # - ANMP
 
 cleaned_names=$(uniq <<<"$1")
+output_file="resultados/created-users.txt"
 
 function normalize {
                   echo "$1" | awk '{$0 = tolower($0);
@@ -27,6 +28,7 @@ function create_passwd {
                   # /usr/bin/mkpasswd-expect -l 10 -c 3 -C 3 -s 2
 }
 
+mkdir -p resultados/
 for name in $cleaned_names; do
                   echo "$name"
                   username=$(build_username "$name")
@@ -37,4 +39,5 @@ for name in $cleaned_names; do
                   echo "$username:$password" | sudo chpasswd
 
                   echo "User $username created with password: $password"
+                  echo "User $username created with password: $password" >>"$output_file"
 done
