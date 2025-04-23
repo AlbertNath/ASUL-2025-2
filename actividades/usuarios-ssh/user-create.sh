@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# nombre="Alberto Natanael Medel Piña"
-cleaned_names=$(uniq $1 | tr " " "\n" | tr -d "," | tail -n +2)
+# Version modificada para esta actividad
+# - ANMP
+
+cleaned_names=$(uniq <<<"$1")
 
 function normalize {
                   echo "$1" | awk '{$0 = tolower($0);
@@ -17,11 +19,6 @@ function normalize {
 
 function build_username {
                   normalized=$(normalize "$1")
-                  # p1=$(echo "$normalized" | awk '{print substr($1, 1, 1)}')
-                  # p2=$(echo "$normalized" | awk '{print substr($2, 1, 1)}')
-                  # p3=$(echo "$normalized" | awk '{print $(NF-1)}')
-                  # p4=$(echo "$normalized" | awk '{print substr($NF, 1, 1)}')
-                  # printf "%s%s%s%s\n" "$p1" "$p2" "$p3" "$p4"
                   echo "$normalized"
 }
 
@@ -30,15 +27,12 @@ function create_passwd {
                   # /usr/bin/mkpasswd-expect -l 10 -c 3 -C 3 -s 2
 }
 
-echo "Creating Debian group"
-sudo addgroup debian
-
 for name in $cleaned_names; do
                   echo "$name"
                   username=$(build_username "$name")
                   password=$(create_passwd)
 
-                  useradd -m "$username" -G debian
+                  useradd -m "$username"
 
                   echo "$username:$password" | sudo chpasswd
 
