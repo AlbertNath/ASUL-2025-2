@@ -54,6 +54,15 @@ USER_NAMES_PER_HOST=$(awk '
 ' "$INPUT_FILE")
 
 USER_NAMES_PER_HOST=$(remove_dups "$USER_NAMES_PER_HOST")
+echo "${USER_NAMES_PER_HOST}" > auxfile.txt
+while read -r line; do
+    if [[ "$line" =~ .*192\.168.* ]]; then
+	echo "${line}" >> auxfile2.txt
+    fi
+done <auxfile.txt
+USER_NAMES_PER_HOST=$(<auxfile2.txt)
+rm auxfile.txt
+rm auxfile2.txt
 
 echo "$HOST_NAMES"
 echo
