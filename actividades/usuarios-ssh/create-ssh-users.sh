@@ -93,6 +93,8 @@ echo "$USERS"
 # DESCOMENTAR
 # ./user-create.sh "$USERS"
 
+./user_key.sh "$INPUT_FILE"
+
 echo -e "[+] OK..."
 
 echo "[!] Creando llaves ssh..."
